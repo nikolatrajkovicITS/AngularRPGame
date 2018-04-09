@@ -37,8 +37,8 @@
         type="text" 
         placeholder="Name" 
         class="mb-5 px-2" 
-        [(ngModel])="character.name" 
-        (input)="changeName()"/>
+        [(ngModel)]="character.name" 
+        (input)="changeName()">
       <button 
         class="btn continue-button px-5 py-2 mx-auto" 
         [class.disabled]="!characterComplete" 
