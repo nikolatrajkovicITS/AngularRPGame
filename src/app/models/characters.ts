@@ -2,8 +2,8 @@ import { RaceOptions, ClassOptions, GenderOptions } from './character-options';
 
 export class Armor {
   /**
-   * @param name 
-   * @param attackBarrierBonus - increase our hero's defense against attacks.
+   * @param attackBarrierBonus - increase 
+   * our hero's defense against attacks.
    */
   constructor(public name: string, public attackBarrierBonus: number) {  }
 }
@@ -20,7 +20,8 @@ export enum CharacterSkills {
 }
 
 /**
- * none option - it will be helpful in our code, so we can check to see if we have a selected action
+ * none option - it will be helpful in our code,
+ * so we can check to see if we have a selected action
  */
 export enum FightOptions {
     attack = "Attack",
@@ -44,7 +45,12 @@ export class BaseCharacter {
     name: string;
     maxHealth: number;
     currentHealth: number;
-    isIncapacitated: boolean;         // If a character is incapacitated they wont be able to interact or be involved in the fight, enemies wont target them and they won't be able to have a turn.
+    /**
+     * If a character is incapacitated they wont be able to interact
+     * or be involved in the fight, enemies wont target them and 
+     * they won't be able to have a turn.
+     */
+    isIncapacitated: boolean;     
     barriers: {
         attack: number,
         sneak: number,
@@ -58,6 +64,11 @@ export class BaseCharacter {
     };
     equippedWeapon: Weapon;
     equippedArmor: Armor;
+    /**
+     * this url is to the image
+     * that will represent our monster
+     */
+    spriteUrl: string;          
 
     constructor(name: string, health: number, skills = { attack: 0, sneak: 0, persuade: 0, intelligence: 0 }) {
        this.name = name;
@@ -85,12 +96,50 @@ export class BaseCharacter {
     }
     
     /**
-     * This will deal dmg that
-     * we want between our minDmg 
-     * and our maxDmg on our 
-     * equipped weapon on characher.
+     * This will deal dmg that we want
+     * between our minDmg and our maxDmg 
+     * on our equipped weapon on characher.
      */
     dealDamage() {
         return Math.floor(Math.random() * (this.equippedWeapon.maxDamage - this.equippedWeapon.minDamage + 1)) + this.equippedWeapon.minDamage;
+    }
+}
+
+export class Monster extends BaseCharacter {
+    /**
+     * Our Ranges will have the ability to trap an enemy
+     */
+    isTrapped: boolean = false; 
+    /**
+     * Our Rouge will have the ability to poison an enemy
+     * This can be increased, the more poisonStack the
+     * more dmg they take every single turn.
+     */
+    poisonStacks: number = 0; 
+    /**
+     * Another point of Rouges is that as they level up
+     * they can improve their poison to be a strong posion.
+     */
+    isStrongPoison: boolean = false;
+    /**
+     * Check if already has taken poison damage
+     * in that turn, if it is not, do the poison
+     * damage - if it has, move on.
+     */
+    hasTakenPoisonDamageThisTurn: boolean = false;
+
+    constructor(name, health, skills, barriers: {attack: number, sneak: number, persuade: number}, minDamage, maxDamage, spriteUrl) {
+        super(name, health, skills);
+
+        /**
+         * Overriding the default barriers
+         * we set in the base class.
+         */
+        this.barriers = barriers;
+        this.equippedWeapon = new Weapon(undefined, minDamage, maxDamage);
+        /**
+         * Image for our monster
+         */
+        this.spriteUrl = spriteUrl;
     }
 }
