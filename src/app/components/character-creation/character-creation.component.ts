@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CharacterOptions } from '../../models/character-options';
+import { CharacterOptions } from '../../models/character-options/character-options';
 
 @Component({
   selector: 'app-character-creation',
