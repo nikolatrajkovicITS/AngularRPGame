@@ -12,7 +12,7 @@ export const CharacterOptions = {
   classes: [
     ClassOptions.warrior,
     ClassOptions.ranger,
-    ClassOptions.rouge,
+    ClassOptions.rogue,
     ClassOptions.priest
   ],
   genders: [

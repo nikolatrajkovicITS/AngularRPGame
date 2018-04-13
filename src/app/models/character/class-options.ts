@@ -1,6 +1,6 @@
 export enum ClassOptions {
   warrior = "Warrior",
   ranger = "Ranger",
-  rouge = "Rouge",
+  rogue = "Rogue",
   priest = "Priest"
 }
