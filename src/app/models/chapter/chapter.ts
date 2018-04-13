@@ -10,8 +10,8 @@ import { Hero } from "../hero/hero";
  * Our chapter is going to be the container holding all 
  * of the logic we need for each section of the story.
  * 
- * First what we need is bunch of infirmational text,
- * something to tell the character the user what is 
+ * First what we need is bunch of informational text,
+ * something to tell the user what is 
  * happening in the story.
  */
 export class Chapter {
@@ -32,7 +32,7 @@ export class Chapter {
    /**
     * Is going to be a array of monsters
     */
-   enemyPart: Monster[];
+   enemyParty: Monster[];
    /**
     * What happens if we fail to sneak past or talk 
     * our way out of it. Are enemy going to attack 

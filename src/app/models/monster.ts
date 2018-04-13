@@ -1,4 +1,4 @@
-import { BaseCharacter } from "./base-character";
+import { BaseCharacter } from "./character/base-character";
 import { Weapon } from "./weapon";
 
 export class Monster extends BaseCharacter {
