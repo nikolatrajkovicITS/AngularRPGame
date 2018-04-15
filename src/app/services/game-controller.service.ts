@@ -14,7 +14,8 @@ import { Warrior } from '../models/hero/warrior';
 import { Ranger } from '../models/hero/ranger';
 import { Priest } from '../models/hero/priest';
 import { Rogue } from '../models/hero/rogue';
-import { checkRace } from '../models/character/characters';
+import { checkRace, ExperienceToLevel } from '../models/character/characters';
+import { SuccessOptions } from '../models/chapter/success-options';
 
 @Injectable() 
 export class GameControllerService { 
@@ -59,13 +60,13 @@ export class GameControllerService {
 
   /**
    * Fist we need to create reference to the router to can navigate the user 
-   * to different componentes.
+   * to different components.
    */
   constructor(private router: Router) { }
 
   /**
    * This are the information we're getting in our create-character page,
-   *  we'll pass that into here and create our main character.
+   * we'll pass that into here and create our main character.
    */
   setMainCharacter(character: {name: string, class: ClassOptions, race: RaceOptions, gender: GenderOptions}) {
     switch (character.class) {
@@ -116,10 +117,86 @@ export class GameControllerService {
             new Weapon("Wand", 1, 3), 
             new Armor("Clothes", 0) 
           ); 
+          break;
     }
-
+  
     checkRace(this.mainCharacter);
     this.heroParty.push(this.mainCharacter);
+    this.router.navigateByUrl('/story');
+  }
+
+  /**
+   * This method is going to return a string 
+   * array to display our user, to tell them
+   * what rewards they have gotten.
+   */
+  encounterSuccess(): string[] {
+    let messages: string[] = [];
+    this.currentChapter.ifSucceed.forEach(reward => {
+      switch (reward) {
+        case SuccessOptions.rewardExperience:
+            messages.push(`Each member of your party recived ${this.currentChapter.rewards.experience} experience.`);
+            this.heroParty.forEach(hero => {
+              hero.experience += this.currentChapter.rewards.experience;
+              if (hero.experience >= ExperienceToLevel[hero.level]) {
+                messages.push(`${hero.name} leveled up! Upgrade their stats on the inventory screen.`);
+                hero.levelUp();
+              }
+            });
+            break;
+        case SuccessOptions.rewardEquipment:
+            messages.push("You received the following equipment: ");
+            this.currentChapter.rewards.equipment.forEach(equipment => {
+               if (equipment instanceof Armor) {
+                 messages.push(`${equipment.name} -- Attack Barrier Bonus: ${equipment.attackBarrierBonus}`);
+               } else {
+                 messages.push(`${equipment.name} -- Min Damage: ${equipment.minDamage}, MaxDamage: ${equipment.maxDamage}`);
+               }
+               this.partyInventory.push(equipment);
+            });
+            break;          
+        case SuccessOptions.addHeroToParty:
+            let newHero: Hero = this.currentChapter.rewards.newHero;
+            if (this.heroParty.length < 3) {
+              messages.push(`A new hero joined your party! ${newHero.name} - ${newHero.characterRole} - lvl ${newHero.level}`);
+              this.heroParty.push(newHero);
+            } else {
+              messages.push(`A new hero is available to join your party! ${newHero.name} - ${newHero.characterRole} - lvl ${newHero.level}`);
+              this.availableHeroes.push(newHero);               
+            }
+            break;
+      }
+    });
+
+    return messages;
+  }
+
+  /**
+   * This method will handle switching to the next chapter.
+   * Also we want to heal our heroes before start with 
+   * new chapter. We want to bring them to the full health
+   * and back them into fight capacity.
+   */
+  nextChapter(): void {
+    this.heroParty.forEach(hero => hero.rest());
+    this.currentChapter = this.currentChapter.nextChapter;
+    this.enemyParty = this.currentChapter.enemyParty;
+  }  
+
+  /**
+   * Game Over method: restart game send user back
+   * to the main screen, removed all data we had 
+   * stored and starts fresh.
+   */
+  gameOver(): void {
+    this.mainCharacter = undefined;
+    this.currentChapter = Chapter1;
+    this.heroParty = [];
+    this.partyInventory = [];
+    this.availableHeroes = [];
+    this.enemyParty = this.currentChapter.enemyParty;
+
+    this.router.navigateByUrl("/");
   }
 
 }
