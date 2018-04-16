@@ -4,7 +4,7 @@
 }
 
 .sidebar {
-  background-color: #d2b48c;
+  background-color: #e9d0b0;
 }
 
 .sidebar ul {
@@ -22,7 +22,7 @@
 }
 
 .sidebar li.active {
-  background: rgba(0, 0, 150);
+  background: rgb(22, 116, 204);  
 }
 
 .gender-button {
@@ -36,14 +36,14 @@
 }
 
 .gender-button.active {
-  background: rgba(0, 0, 150);  
+  background: rgb(22, 116, 204);  
 }
 
 .continue-button {
   display: block;
   cursor: pointer;
   color: white;
-  background: rgba(0, 0, 150);  
+  background: rgb(22, 116, 204);  
   border: none;
   border-radius: 7px;  
 }

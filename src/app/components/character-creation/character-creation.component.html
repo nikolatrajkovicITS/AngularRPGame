@@ -1,6 +1,8 @@
 <div class="container-fluid">
   <div class="row h-100">
     <div class="col-3 sidebar p-3 text-center">
+
+      <!-- Races Widget -->
       <h1>Races</h1>
       <ul>
         <li 
@@ -12,6 +14,8 @@
         </li>
       </ul>
     </div>
+
+    <!-- Centered Widget -->
     <div class="col-6 text-center text-white p-3">
       <h2>Race</h2>
       <p>{{ character.race }}</p>
@@ -44,6 +48,8 @@
         [class.disabled]="!characterComplete" 
         (click)="createCharacter()">Create Character</button>
     </div>
+
+    <!-- Classes Widget -->
     <div class="col-3 sidebar p-3 text-center">
       <h1>Classes</h1>
       <ul>

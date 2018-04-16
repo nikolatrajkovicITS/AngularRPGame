@@ -10,6 +10,7 @@ import { InventoryComponent } from './components/inventory/inventory.component';
 import { StartComponent } from './components/start/start.component';
 import { StoryComponent } from './components/story/story.component';
 import { AppRoutingModule } from './app-routing.module';
+import { GameControllerService } from './services/game-controller.service';
 
 
 @NgModule({
@@ -27,7 +28,9 @@ import { AppRoutingModule } from './app-routing.module';
     FormsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    GameControllerService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

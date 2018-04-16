@@ -68,7 +68,7 @@ export class GameControllerService {
    * This are the information we're getting in our create-character page,
    * we'll pass that into here and create our main character.
    */
-  setMainCharacter(character: {name: string, class: ClassOptions, race: RaceOptions, gender: GenderOptions}) {
+  setMainCharacter(character) {
     switch (character.class) {
       case ClassOptions.warrior:
           this.mainCharacter = new Warrior(
