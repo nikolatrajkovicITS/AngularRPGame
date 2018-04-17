@@ -43,14 +43,23 @@ export class BaseCharacter {
      }
   }
 
+   /**
+   * Genereates a number between 1 and 20 + thier skill.
+   */
   attack() {
       return Math.floor(Math.random() * 20) + 1 + this.skills.attack;
   }
 
+  /**
+   * Genereates a number between 1 and 20 + thier skill.
+   */
   sneak() {
       return Math.floor(Math.random() * 20) + 1 + this.skills.sneak;        
   }
 
+  /**
+   * Genereates a number between 1 and 20 + thier skill.
+   */
   persuade() {
       return Math.floor(Math.random() * 20) + 1 + this.skills.persuade;        
   }
