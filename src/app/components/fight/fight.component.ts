@@ -12,4 +12,11 @@ export class FightComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * This syntax maybe will be a problem **********************
+   */
+  addCssClasses() {
+    return "'active': currentCharacter === hero, 'targetable': availableTargets === teams.heroes && !hero.isIncapacitated";
+  }
+
 }
