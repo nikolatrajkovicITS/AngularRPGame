@@ -158,6 +158,99 @@ export class FightComponent {
       }
   }
 
+  checkIfWin() {
+    this.selectedAction = FightOptions.none;
+    if (this.enemiesIncapacitated === this.enemyParty.length) {
+      this.displayMessage = `All enemies have been defeated!`;
+      this.successMessages = this.gameControllerService.encounterSuccess();
+      this.showNextChapterButton = true;
+      this.gameControllerService.isFighting = false;
+      return;
+    } 
+    if (this.hearoesIncapacitated === this.heroParty.length) {
+      this.displayMessage = `All heroes have been defeated!`;
+      this.showGameOverButton = true;
+      this.gameControllerService.isFighting = false;
+      return;
+    }
+    this.nextTurn();
+  }
+
+  nextTurn() {
+    if (this.currentCharacter instanceof Monster) {
+
+    }
+    if (this.currentCharacter instanceof Monster && this.currentCharacter.hasTakenPoisonDamageThisTurn) {
+      
+    }
+
+    this.availableTargets = Teams.none;
+    this.selectedAction = FightOptions.none;
+    this.characterIndex++;
+    let nextCharacter;
+
+    if (this.heroTurn) {
+      nextCharacter = this.heroParty[this.characterIndex];
+    } else {
+      nextCharacter = this.enemyParty[this.characterIndex];
+    }
+
+    if (nextCharacter) {
+      if (!nextCharacter.isIncapacitated) {
+        this.currentCharacter = nextCharacter;
+        this.displayMessage = `It's ${this.currentCharacter.name}'s turn.`;
+        if (this.currentCharacter instanceof Hero) {
+          this.freezeActions = false;
+          if (this.currentCharacter.turnsUntilSpecialAvailableAgain) {
+            this.currentCharacter.turnsUntilSpecialAvailableAgain--;
+          }
+        } else {
+            setTimeout(() => {
+              this.takeEnemyTurn();
+          }, this.actionDelay);
+        }
+      } else {
+          this.nextTurn();
+      }
+    } else {
+        this.heroTurn = !this.heroTurn;
+        this.characterIndex = -1;
+        this.nextTurn();
+    }
+  }
+
+  takeEnemyTurn() {
+    if (this.currentCharacter instanceof Monster && this.currentCharacter.isTrapped) {
+      this.currentCharacter.isTrapped = false;
+      this.displayMessage = `${this.currentCharacter.name} freed itself from the`;
+    } else {
+      let target: Hero;
+      this.selectedAction = FightOptions.attack;
+
+      while (!target) {
+        let randomTargetIndex = Math.floor(Math.random() * this.heroParty.length);
+        let potentialTarget = this.heroParty[randomTargetIndex];
+        if (!potentialTarget.isIncapacitated) {
+          target = potentialTarget;
+        }
+      }
+      this.displayMessage = `${this.currentCharacter.name} attacks ${target.name}.`;
+
+      setTimeout(() => {
+        this.tryAttack(target);
+      }, this.actionDelay);
+    }
+  }
+
+  nextChapter() {
+    this.gameControllerService.nextChapter();
+    this.router.navigateByUrl("/story");
+  }
+
+  gameOver() {
+    this.gameControllerService.gameOver();
+  }
+  
 
   /**
    * This syntax maybe will be a problem ***
