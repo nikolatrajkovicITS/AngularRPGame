@@ -54,7 +54,7 @@
       <div 
         *ngFor="let enemy of enemyParty" 
         class="enemy d-flex flex-column"
-        [ngClass]="addCssClasses()"
+        [ngClass]="{'active': currentCharacter === hero, 'targetable' : availableTargets === teams.heroes && !hero.isIncapacitated}"
         (click)="tryAttack(enemy)">
       <img [src]="enemy.spriteUrl" [alt]="enemy.characterRole" class="mx-auto">
       <div class="health-bar progress">
